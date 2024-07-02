@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Insumos - Fundación Apoyo Care</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'myapp/images/logo.jpg' %}" alt="Fundación Apoyo Care Logo" height="30" class="d-inline-block align-top">
+                </a>
+            </div>
+        </nav>
+    </header>
+    <section class="main-content">
+        <div class="container">
+            <h2 class="mb-4">Buscar Insumos</h2>
+            <form>
+                <div class="form-group">
+                    <label for="inputNombre">Nombre del Insumo</label>
+                    <input type="text" class="form-control" id="inputNombre">
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+            <table class="table table-bordered mt-4">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Ubicación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Paracetamol</td>
+                        <td>50</td>
+                        <td>Almacén A</td>
+                    </tr>
+                    <tr>
+                        <td>Aspirina</td>
+                        <td>30</td>
+                        <td>Almacén B</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <footer class="bg-light text-center py-4">
+        <div class="container">
+            <p>&copy; 2024 Fundación Apoyo Care. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.amazonaws.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

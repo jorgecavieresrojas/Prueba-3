@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residentes - Fundación Apoyo Care</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'index' %}">
+                    <img src="{% static 'myapp/images/logo.jpg' %}" alt="Fundación Apoyo Care Logo" height="30" class="d-inline-block align-top">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">Inicio</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url 'residentes' %}">Residentes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'farmacia' %}">Farmacia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ingresos' %}">Ingresos y Salidas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'reportes' %}">Reportes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'configuracion' %}">Configuración</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'asistencia' %}">Asistencia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ayuda' %}">Ayuda</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <section class="main-content">
+        <div class="container">
+            <h2 class="mb-4">Residentes</h2>
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalAgregarResidente">Agregar Residente</button>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Estado de Salud</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for residente in residentes %}
+                    <tr>
+                        <td>{{ residente.nombre }}</td>
+                        <td>{{ residente.edad }}</td>
+                        <td>{{ residente.estado_salud }}</td>
+                        <td>{{ residente.fecha_ingreso }}</td>
+                        <td>
+                            <a href="{% url 'editar_residente' residente.id %}" class="btn btn-warning btn-sm">Editar</a>
+                            <button type="button" class="btn btn-danger btn-sm btnEliminar" data-id="{{ residente.id }}" data-nombre="{{ residente.nombre }}">Eliminar</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <div class="modal fade" id="modalAgregarResidente" tabindex="-1" role="dialog" aria-labelledby="modalAgregarResidenteLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarResidenteLabel">Agregar Residente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarResidente" method="POST" action="{% url 'agregar_residente' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="nombreResidente">Nombre</label>
+                            <input type="text" class="form-control" id="nombreResidente" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edadResidente">Edad</label>
+                            <input type="number" class="form-control" id="edadResidente" name="edad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="estadoSaludResidente">Estado de Salud</label>
+                            <input type="text" class="form-control" id="estadoSaludResidente" name="estado_salud" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaIngresoResidente">Fecha de Ingreso</label>
+                            <input type="date" class="form-control" id="fechaIngresoResidente" name="fecha_ingreso" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div class="modal fade" id="modalEliminarResidente" tabindex="-1" role="dialog" aria-labelledby="modalEliminarResidenteLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEliminarResidenteLabel">Eliminar Residente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas eliminar a <span id="nombreResidenteEliminar"></span>?</p>
+                </div>
+                <div class="modal-footer">
+                    <form id="formEliminarResidente" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light text-center py-4">
+        <div class="container">
+            <p>&copy; 2024 Fundación Apoyo Care. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.btnEliminar').on('click', function() {
+                var id = $(this).data('id');
+                var nombre = $(this).data('nombre');
+                $('#nombreResidenteEliminar').text(nombre);
+                $('#formEliminarResidente').attr('action', '{% url "eliminar_residente" 0 %}'.replace('0', id));
+                $('#modalEliminarResidente').modal('show');
+            });
+        });
+    </script>
+</body>
+</html>

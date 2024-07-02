@@ -1,0 +1,24 @@
+/* Estilos personalizados */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.main-content {
+    padding: 50px 0;
+}
+
+footer {
+    color: #555;
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #000; /* Cambia el color del enlace si es necesario */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .navbar-nav .nav-item {
+        text-align: center;
+        margin: 0;
+    }
+}

@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aportar - Fundación Apoyo Care</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'myapp/images/logo.jpg' %}" alt="Fundación Apoyo Care Logo" height="30" class="d-inline-block align-top">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <section class="main-content">
+        <div class="container mt-5">
+            <h2>Realizar un Aporte</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="tipo_aporte">Tipo de Aporte</label>
+                    {{ form.tipo_aporte }}
+                </div>
+                <div id="tarjeta-credito" style="display: none;">
+                    <div class="form-group">
+                        <label for="numero_tarjeta">Número de Tarjeta</label>
+                        {{ form.numero_tarjeta }}
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre_titular">Nombre del Titular</label>
+                        {{ form.nombre_titular }}
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha_vencimiento">Fecha de Vencimiento</label>
+                        {{ form.fecha_vencimiento }}
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        {{ form.cvv }}
+                    </div>
+                </div>
+                <div id="transferencia" style="display: none;">
+                    <h5>Detalles de la Transferencia:</h5>
+                    <p><strong>Nombre:</strong> Fundación Apoyo Care</p>
+                    <p><strong>RUT:</strong> 77.552.254-7</p>
+                    <p><strong>Banco:</strong> Estado</p>
+                    <p><strong>Tipo de Cuenta:</strong> Corriente</p>
+                    <p><strong>Número de Cuenta:</strong> 8547321145</p>
+                    <div class="form-group">
+                        <label for="comprobante">Adjuntar Comprobante</label>
+                        {{ form.comprobante }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="monto">Monto del Aporte</label>
+                    {{ form.monto }}
+                </div>
+                <div class="form-group">
+                    <label for="comentario">Comentario</label>
+                    {{ form.comentario }}
+                </div>
+                <button type="submit" class="btn btn-primary">Confirmar</button>
+                <a href="{% url 'index2' %}" class="btn btn-secondary">Volver</a>
+            </form>
+        </div>
+    </section>
+    <footer class="bg-light text-center py-4">
+        <div class="container">
+            <p>&copy; 2024 Fundación Apoyo Care. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#id_tipo_aporte').change(function() {
+                var tipo = $(this).val();
+                if (tipo == 'credito') {
+                    $('#tarjeta-credito').show();
+                    $('#transferencia').hide();
+                } else if (tipo == 'transferencia') {
+                    $('#tarjeta-credito').hide();
+                    $('#transferencia').show();
+                } else {
+                    $('#tarjeta-credito').hide();
+                    $('#transferencia').hide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
